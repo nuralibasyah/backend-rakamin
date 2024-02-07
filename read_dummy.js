@@ -1,7 +1,11 @@
 const express = require('express');
 const fs = require('fs');
+const cors = require('cors');
 
 const app = express();
+
+// 👇️ configure CORS
+app.use(cors());
 const PORT = 3000;
 
 // Endpoint to get saldo
