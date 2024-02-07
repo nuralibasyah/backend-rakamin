@@ -16,7 +16,7 @@ connectToDatabase()
 
                 // Query the database to retrieve the saldo value
                 const collection = db.collection('SaldoKu'); // Replace 'your_collection_name' with the actual name of your collection
-                const document = await collection.findOne({ id: 1 });
+                const document = await collection.findOne({ id: 0 });
 
                 if (!document) {
                     res.status(404).send('Saldo not found');
@@ -24,7 +24,7 @@ connectToDatabase()
                 }
 
                 // Send the saldo value as a response
-                res.json({ saldo: document.saldo });
+                res.json({ saldo: document.name });
             } catch (error) {
                 console.error('Error fetching saldo:', error);
                 res.status(500).send('Internal Server Error');
