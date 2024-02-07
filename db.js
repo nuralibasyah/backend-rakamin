@@ -1,26 +1,27 @@
+const { MongoClient } = require('mongodb');
 
-const { MongoClient, ServerApiVersion } = require('mongodb');
-const uri = "mongodb+srv://nuralibasyah:PpeqWhO99KFKF7yE@cluster0.ti7srot.mongodb.net/?retryWrites=true&w=majority";
+// Connection URL
+const url = "mongodb+srv://nuralibasyah:PpeqWhO99KFKF7yE@cluster0.ti7srot.mongodb.net/?retryWrites=true&w=majority"; // Assuming MongoDB is running locally
 
-// Create a MongoClient with a MongoClientOptions object to set the Stable API version
-const client = new MongoClient(uri, {
-  serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true,
-  }
-});
+// Database Name
+const dbName = 'Cluster0'; // Replace 'your_database_name' with your actual database name
 
-async function run() {
-  try {
-    // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
-    // Send a ping to confirm a successful connection
-    await client.db("admin").command({ ping: 1 });
-    console.log("Pinged your deployment. You successfully connected to MongoDB!");
-  } finally {
-    // Ensures that the client will close when you finish/error
-    await client.close();
-  }
+let dbInstance;
+
+async function connectToDatabase() {
+    const client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true });
+    console.log('Connected successfully to MongoDB');
+    dbInstance = client.db(dbName);
 }
-run().catch(console.dir);
+
+function getDatabase() {
+    if (!dbInstance) {
+        throw new Error('Database not initialized. Call connectToDatabase first.');
+    }
+    return dbInstance;
+}
+
+module.exports = {
+    connectToDatabase,
+    getDatabase
+};
